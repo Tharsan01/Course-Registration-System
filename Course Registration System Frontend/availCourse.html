@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Courses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f0f2f5;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Available Courses</h2>
+
+<table id="courseTable">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Duration (Weeks)</th>
+            <th>Trainer</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://localhost:8080/api/courses", true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const courses = JSON.parse(xhr.responseText);
+            const tbody = document.querySelector("#courseTable tbody");
+
+            courses.forEach(course => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${course.courseName}</td>
+                    <td>${course.durationInWeeks}</td>
+                    <td>${course.trainer}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    };
+    xhr.send();
+</script>
+
+</body>
+</html>
